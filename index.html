@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YewNo Release</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Expanded:wght@600;700&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single centered column; working demo is the hero's second beat. */
+:root{
+  --paper:#f7f6f2;      /* warm paper */
+  --ink:#1a2420;        /* evergreen-black */
+  --yew:#1f5c43;        /* yew needle green — brand */
+  --aril:#c2403a;       /* yew berry red — alerts/sensitive */
+  --mist:#5f6f68;       /* muted green-grey */
+  --card:#ffffff;
+  --line:#dcdcd2;
+  --display:"Archivo Expanded","Archivo",Helvetica,Arial,sans-serif;
+  --body:"Archivo",Helvetica,Arial,sans-serif;
+  --mono:"Spline Sans Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#111713; --ink:#e9efeb; --yew:#5fbf97; --aril:#e8766f;
+  --mist:#8da399; --card:#19211c; --line:#2a352f; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#111713; --ink:#e9efeb; --yew:#5fbf97; --aril:#e8766f;
+  --mist:#8da399; --card:#19211c; --line:#2a352f; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 48px;
+}
+.col{max-width:780px;margin:0 auto}
+header{display:flex;align-items:center;gap:12px;padding-block:28px 8px}
+.mark{width:38px;height:38px;border-radius:9px;background:var(--yew);color:var(--paper);
+      display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:17px}
+.brand{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.01em}
+.brand small{display:block;font-family:var(--mono);font-weight:400;font-size:11px;color:var(--mist);letter-spacing:.08em}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5.5vw,44px);
+   line-height:1.12;margin:20px 0 14px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--yew)}
+.sub{color:var(--mist);max-width:56ch;margin:0 0 10px}
+.sub b{color:var(--ink)}
+
+/* demo */
+.demo{background:var(--card);border:1px solid var(--line);border-radius:14px;
+      padding:20px;margin-top:26px;box-shadow:0 1px 2px rgba(26,36,32,.06)}
+.demotag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+         color:var(--yew);margin-bottom:12px}
+.searchrow{display:flex;gap:10px;flex-wrap:wrap}
+.searchrow input{flex:1;min-width:0;padding:13px 16px;border:1.5px solid var(--line);
+  border-radius:10px;background:var(--paper);color:var(--ink);font:inherit}
+.searchrow input:focus{outline:none;border-color:var(--yew)}
+.searchrow button{padding:13px 22px;border:none;border-radius:10px;background:var(--yew);
+  color:var(--paper);font:600 15px var(--body);cursor:pointer}
+.searchrow button:hover{filter:brightness(1.12)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.chip{font-family:var(--mono);font-size:12px;padding:5px 12px;border-radius:999px;
+  border:1px solid var(--line);background:transparent;color:var(--mist);cursor:pointer}
+.chip.on{background:var(--yew);border-color:var(--yew);color:var(--paper);font-weight:500}
+.results{margin-top:16px;border-top:1px solid var(--line)}
+.r{padding:13px 2px;border-bottom:1px solid var(--line)}
+.r:last-child{border-bottom:none}
+.src{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--yew);background:color-mix(in srgb,var(--yew) 12%,transparent);
+  padding:2px 8px;border-radius:5px;margin-right:8px}
+.src.lock{color:var(--aril);background:color-mix(in srgb,var(--aril) 12%,transparent)}
+.rt{font-weight:600;font-size:15px}
+.rs{color:var(--mist);font-size:14px;margin-top:3px;max-width:65ch}
+.empty{color:var(--mist);padding:16px 2px}
+.hint{font-family:var(--mono);font-size:12px;color:var(--mist);margin-top:12px}
+.hint span{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* security strip */
+.sec{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;
+     background:var(--line);border:1px solid var(--line);border-radius:12px;
+     overflow:hidden;margin-top:34px}
+.sec div{background:var(--card);padding:16px 16px 14px;min-width:0}
+.sec b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+       text-transform:uppercase;color:var(--yew);margin-bottom:5px}
+.sec p{margin:0;font-size:13.5px;color:var(--mist);line-height:1.5}
+
+/* footer pitch */
+.who{margin-top:34px;border-left:3px solid var(--yew);padding:4px 0 4px 18px}
+.who p{margin:6px 0;max-width:62ch}
+.who .lead{font-family:var(--display);font-weight:600;font-size:18px}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+       font-family:var(--mono);font-size:12px;color:var(--mist)}
+@media (prefers-reduced-motion: no-preference){
+  .r{animation:rise .25s ease both}
+  @keyframes rise{from{opacity:.25;transform:translateY(3px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+
+
+<div class="col">
+  <header>
+    <div class="mark">Y</div>
+    <div class="brand">YewNo Release<small>YNR / UNIFIED INDEX v1.0</small></div>
+  </header>
+
+  <h1>Every system you own.<br><em>One search bar.</em></h1>
+  <p class="sub">Email, texts, photos, files, smart home telemetry, WiFi, bills, social accounts, banking, and the live web in <b>one encrypted, self hosted index</b>. Built for people and scaled for enterprises whose data lives in forty places and belongs in one.</p>
+
+  <!-- LIVE DEMO -->
+  <div class="demo">
+    <div class="demotag">● Live demo: a preloaded personal index</div>
+    <div class="searchrow">
+      <input id="q" value="fridge" placeholder="Search everything you own…" aria-label="Search">
+      <button onclick="run()">Search</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="results" id="out"></div>
+    <div class="hint">Try: <span onclick="go('bill')">bill</span> · <span onclick="go('wifi device')">wifi device</span> · <span onclick="go('chase')">chase</span> · <span onclick="go('flight')">flight</span> · <span onclick="go('dryer')">dryer</span></div>
+  </div>
+
+  <!-- SECURITY -->
+  <div class="sec">
+    <div><b>Encrypted at rest</b><p>Banking, bills and account data sealed with AES (Fernet) before it ever touches the index.</p></div>
+    <div><b>Hardened auth</b><p>PBKDF2 with SHA256, 600k iterations. Opaque revocable sessions with no decodable tokens.</p></div>
+    <div><b>Audit everything</b><p>Every login, ingest and search written to an append only audit log.</p></div>
+    <div><b>Rate limited</b><p>Token bucket limits per IP and route stop brute force and scraping cold.</p></div>
+  </div>
+
+  <!-- ENTERPRISE PITCH -->
+  <div class="who">
+    <p class="lead">For enterprises: the central database you keep saying you'll build.</p>
+    <p>Your CRM, ticketing, email, chat, telemetry and billing each answer one question. YNR's connector model normalizes all of them into a single permissioned index, so the answer to "where is it?" is always the same place. Self hosted on your infrastructure. Your data never leaves.</p>
+  </div>
+
+  <footer>YEWNO RELEASE · self hosted · open connector API · demo data shown above is fictional</footer>
+</div>
+
+<script>
+const DATA=[
+ ["gmail","Invoice #4417 from Orlando Utilities","Your October electric bill is $162.44, due Nov 3. Autopay is OFF.",0],
+ ["gmail","Flight confirmation: MIA to JFK","Confirmation XK92LD. Departs Nov 12, 7:45 AM, seat 14C.",0],
+ ["sms","Mom","Don't forget Sunday dinner at 6. Bring the card table!",0],
+ ["sms","Dentist reminder","Your cleaning is Tuesday 10/28 at 2:30 PM. Reply C to confirm.",0],
+ ["photos","IMG_2041: Beach day Clearwater","Tags: beach, sunset, group photo, July 2026",0],
+ ["photos","Screenshot: WiFi router settings","Tags: screenshot, router, admin page",0],
+ ["files","Q3_budget_final.xlsx","Quarterly budget spreadsheet with rent, groceries, subscriptions tabs.",0],
+ ["files","resume_2026.pdf","Resume PDF, updated September. ML engineer roles.",0],
+ ["iot","Fridge: door left open alert","Freezer door open 4 min at 11:42 PM. Temp rose to 21°F.",0],
+ ["iot","Stove: auto shutoff","Front left burner auto shutoff after 45 min idle, 6:14 PM.",0],
+ ["iot","Dryer: cycle complete","Towels cycle finished 3:02 PM. Lint filter at 80%.",0],
+ ["wifi","New device joined network","Unknown device 'ESP_9A2F' joined 2.4GHz band at 9:03 AM.",0],
+ ["wifi","Monthly data usage","1.4 TB used this cycle. Top device: living room TV (410 GB).",0],
+ ["bills","Car insurance: GEICO","Policy renews Dec 1. Monthly premium $148.",1],
+ ["bills","Internet: Spectrum","Gig plan. Promo ends January, price increases after.",1],
+ ["social","Instagram account","Business account, 2FA enabled via authenticator app.",1],
+ ["social","LinkedIn account","Profile set to open to work (recruiters only). 2FA enabled.",1],
+ ["banking","Chase checking: large transaction flagged","Card purchase $842.19 at B&H Photo on 10/20, marked as recognized.",1],
+ ["banking","Savings transfer scheduled","Recurring $500 transfer to high yield savings every 1st of month.",1],
+ ["web","Live web fallthrough","No local match? Queries fall through to live internet search automatically.",0],
+];
+const SOURCES=["all","gmail","sms","photos","files","iot","wifi","bills","social","banking","web"];
+let SRC="all";
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function chips(){
+  $("chips").innerHTML=SOURCES.map(s=>{
+    const n=s==="all"?DATA.length:DATA.filter(d=>d[0]===s).length;
+    return `<button class="chip ${s===SRC?"on":""}" onclick="pick('${s}')">${s} ${n}</button>`;
+  }).join("");
+}
+function pick(s){SRC=s;chips();run();}
+function go(q){$("q").value=q;run();}
+function run(){
+  const q=$("q").value.trim().toLowerCase();
+  const toks=q.split(/\s+/).filter(Boolean);
+  let hits=DATA.filter(d=>(SRC==="all"||d[0]===SRC)&&
+    toks.every(t=>(d[0]+" "+d[1]+" "+d[2]).toLowerCase().includes(t)));
+  if(!q) hits=DATA.filter(d=>SRC==="all"||d[0]===SRC);
+  $("out").innerHTML=hits.length?hits.map(d=>`
+    <div class="r">
+      <span class="src ${d[3]?"lock":""}">${d[0]}${d[3]?" 🔒":""}</span><span class="rt">${esc(d[1])}</span>
+      <div class="rs">${esc(d[2])}</div>
+    </div>`).join("")
+   :`<div class="empty">No matches for “${esc(q)}”. In the full product this falls through to live web search.</div>`;
+}
+$("q").addEventListener("keydown",e=>e.key==="Enter"&&run());
+chips();run();
+</script>
+
+</body>
+</html>
